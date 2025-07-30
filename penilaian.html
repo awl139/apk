@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Penilaian Perusahaan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+        #toggleSidebarCheckbox {
+      display: none;
+    }
+    body {
+      background-color: #d653f0;
+      padding: 20px;
+    }
+
+    #toggleSidebarCheckbox:checked ~ .sidebar {
+      transform: translateX(0);
+    }
+
+    .sidebar {
+      background-color: rgb(220, 193, 226);
+      font-weight: bold;
+      width: 250px;
+      min-height: 100vh;
+      padding-top: 20px;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    #sidebarToggle:checked + .sidebar {
+      transform: translateX(0);
+    }
+
+    .sidebar a {
+      color: #000;
+      text-decoration: none;
+      display: block;
+      padding: 10px 20px;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+    }
+
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .profile-name, .profile-nim {
+      text-align: center;
+      color: #000;
+    }
+
+    .profile-name {
+      font-weight: bold;
+    }
+
+    .profile-nim {
+      font-size: 0.9rem;
+    }
+
+    .edit-profile-btn {
+      display: block;
+      margin: 10px auto;
+      background-color: #4b0082;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+
+    .footer-sidebar {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #000;
+      font-size: 0.9rem;
+    }
+
+    .container1, .container2 {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: white;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .navbar {
+      text-align: center;
+      background-color: #8d53a1;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .form-section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .rating {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .rating label {
+      background-color: #c788d8;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      margin: 2px;
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 10px;
+      padding: 10px;
+      resize: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #a444c4;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 0;
+      float: right;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      color: black;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: block;
+      margin: auto;
+      width: 50px;
+      height: 50px;
+      border-radius: 30px;
+    }
+
+    @media (max-width: 480px) {
+      .rating label {
+        font-size: 11px;
+        padding: 8px;
+      }
+      .container {
+        padding: 12px;
+      }
+    }
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #cf9dc8;
+      border: none;
+      border-radius: 20px;
+      padding: 6px 10px;
+      z-index: 1100;
+      cursor: pointer;
+    }
+    .icon-close {
+      display: none;
+    }
+
+    #toggleSidebarCheckbox:checked + label .icon-menu {
+      display: none;
+    }
+
+    #toggleSidebarCheckbox:checked + label .icon-close {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+
+   <!-- Checkbox sebagai kontrol toggle -->
+  <input type="checkbox" id="toggleSidebarCheckbox" hidden />
+  
+  <!-- Tombol toggle -->
+  <label for="toggleSidebarCheckbox" class="toggle-btn">
+    <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 16 16">
+      <path d="M2.5 12.5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zm0-5a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11z"/>
+    </svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="24" height="24" viewBox="0 0 16 16">
+      <path d="M15 8a.5.5 0 0 1-.5.5H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L3.707 7.5H14.5a.5.5 0 0 1 .5.5z"/>
+    </svg>
+  </label>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="pfp.jpg" alt="Profile" class="profile-img mt-3">
+    <div class="profile-name">NAMA</div>
+    <div class="profile-nim">NIM</div>
+    <button class="edit-profile-btn">EDIT PROFIL</button>
+    <a href="formdaftar.html">Pendaftaran Magang</a>
+    <a href="approval.html">Approval Magang</a>
+    <a href="bimbingan.html">Bimbingan</a>
+    <a href="laporan.html">Laporan Magang</a>
+    <a href="penilaian.html">Penilaian</a>
+    <a href="data.html">Data dan Statistik</a>
+    <a href="sertif.html">Sertifikat</a>
+    <a href="logout.html">LOGOUT</a>
+  </div>
+
+  <div class="navbar">Penilaian Perusahaan</div>
+
+  <div class="container1">
+    <div class="form-section">
+      <h2>Form Penilaian Perusahaan</h2>
+      <div class="rating">
+        <label><input type="radio" name="nilai" value="5"> 5<br>(Sangat Baik)</label>
+        <label><input type="radio" name="nilai" value="4"> 4<br>(Baik)</label>
+        <label><input type="radio" name="nilai" value="3"> 3<br>(Cukup)</label>
+        <label><input type="radio" name="nilai" value="2"> 2<br>(Kurang)</label>
+        <label><input type="radio" name="nilai" value="1"> 1<br>(Buruk)</label>
+      </div>
+      <textarea placeholder="Tambahkan komentar..."></textarea>
+      <button>Kirim Penilaian</button>
+    </div>
+  </div>
+
+  <div class="container2">
+    <h3>Daftar Penilaian Perusahaan</h3>
+    <div class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th>Mahasiswa</th>
+            <th>Nilai</th>
+            <th>Komentar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3">(Kosong)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <img class="logo" src="amikom.jpg" alt="Amikom"><br>
+    Universitas Amikom Yogyakarta
+  </footer>
+</body>
+</html>
